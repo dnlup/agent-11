@@ -1,0 +1,49 @@
+{
+  "name": "@dnlup/agent-11",
+  "version": "1.0.0-0",
+  "description": "A simple undici pool manager",
+  "main": "index.js",
+  "type": "commonjs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "standard --verbose | snazzy",
+    "test": "npm run lint && tap",
+    "coverage": "tap --coverage-report=html",
+    "doc": "markdown-toc -i README.md",
+    "prerelease": "npm cit",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
+    "postrelease": "npm run push && npm publish",
+    "prenext": "npm cit",
+    "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
+    "postnext": "npm run push && npm publish --tag next",
+    "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnlup/agent-11.git"
+  },
+  "keywords": [
+    "undici",
+    "pool",
+    "manager"
+  ],
+  "author": "Daniele Belardi <dwon.dnl@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dnlup/agent-11/issues"
+  },
+  "homepage": "https://github.com/dnlup/agent-11#readme",
+  "peerDependencies": {
+    "undici": "^2.0.4"
+  },
+  "devDependencies": {
+    "markdown-toc": "^1.2.0",
+    "snazzy": "^8.0.0",
+    "standard": "^14.3.4",
+    "standard-version": "^9.0.0",
+    "tap": "^14.10.8",
+    "undici": "^2.0.4"
+  }
+}
