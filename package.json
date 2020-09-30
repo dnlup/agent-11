@@ -13,10 +13,10 @@
     "coverage": "tap --coverage-report=html",
     "doc": "markdown-toc -i README.md",
     "prerelease": "npm cit",
-    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
+    "release": "standard-version",
     "postrelease": "npm run push && npm publish",
     "prenext": "npm cit",
-    "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
+    "next": "standard-version --prerelease",
     "postnext": "npm run push && npm publish --tag next",
     "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
   },
