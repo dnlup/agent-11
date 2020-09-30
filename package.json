@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/dnlup/agent-11#readme",
   "peerDependencies": {
-    "undici": "^2.0.4"
+    "undici": "^2.0.5"
   },
   "devDependencies": {
     "markdown-toc": "^1.2.0",
@@ -44,6 +44,6 @@
     "standard": "^14.3.4",
     "standard-version": "^9.0.0",
     "tap": "^14.10.8",
-    "undici": "^2.0.4"
+    "undici": "^2.0.5"
   }
 }
