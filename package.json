@@ -24,6 +24,10 @@
     "type": "git",
     "url": "git+https://github.com/dnlup/agent-11.git"
   },
+  "files": [
+    "index.js",
+    "symbols.js"
+  ],
   "keywords": [
     "undici",
     "pool",
