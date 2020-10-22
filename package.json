@@ -45,7 +45,7 @@
   "devDependencies": {
     "markdown-toc": "^1.2.0",
     "snazzy": "^8.0.0",
-    "standard": "^14.3.4",
+    "standard": "^15.0.0",
     "standard-version": "^9.0.0",
     "tap": "^14.10.8",
     "undici": "^2.0.7"
