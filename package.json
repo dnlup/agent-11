@@ -14,10 +14,10 @@
     "coverage": "tap --coverage-report=html",
     "doc": "markdown-toc -i README.md",
     "prerelease": "npm cit",
-    "release": "standard-version",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
     "postrelease": "npm run push && npm publish",
     "prenext": "npm cit",
-    "next": "standard-version --prerelease",
+    "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
     "postnext": "npm run push && npm publish --tag next",
     "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
   },
@@ -44,6 +44,7 @@
     "undici": "^2.0.7"
   },
   "devDependencies": {
+    "husky": "^4.3.0",
     "markdown-toc": "^1.2.0",
     "snazzy": "^8.0.0",
     "standard": "^15.0.0",

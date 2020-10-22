@@ -116,7 +116,7 @@ test('getConnection with a unix socket', { only: true }, t => {
   const url = 'http://xyz.xyz'
   const socketPath = '/tmp/agent-11/agent.sock'
   const pool = agent.getConnection(url, {
-    socketPath,
+    socketPath
   })
   t.is(pool, agent.getConnection(url, {
     socketPath
