@@ -1,8 +1,9 @@
 'use strict'
 
-const { test } = require('tap')
+const { test, todo } = require('tap')
 const { promisify } = require('util')
 const Agent = require('./')
+const { kGetKey } = require('./symbols')
 
 const sleep = promisify(setTimeout)
 
@@ -40,6 +41,49 @@ test('invalid options', t => {
   t.end()
 })
 
+test('kGetKey from url and options', t => {
+  const list = [
+    {
+      opts: [
+        new URL('http://localhost:3333')
+      ],
+      expected: 'http:localhost:3333'
+    },
+    {
+      opts: [
+        { hostname: 'localhost' }
+      ],
+      expected: 'http:localhost'
+    },
+    {
+      opts: [
+        {
+          protocol: 'http',
+          hostname: 'localhost'
+        }
+      ],
+      expected: 'http:localhost'
+    },
+    {
+      opts: [
+        new URL('https://localhost:3400'),
+        {
+          socketPath: '/tmp/agent-11/agent.sock'
+        }
+      ],
+      expected: 'https:localhost:3400:/tmp/agent-11/agent.sock'
+    }
+  ]
+
+  const agent = new Agent()
+
+  for (const [index, item] of list.entries()) {
+    const key = agent[kGetKey](...item.opts)
+    t.is(key, item.expected, `list item ${index}`)
+  }
+  t.end()
+})
+
 test('getConnection with a URL or url like object', t => {
   const agent = new Agent()
   t.teardown(() => agent.close())
@@ -66,6 +110,20 @@ test('getConnection with a string', t => {
   t.end()
 })
 
+test('getConnection with a unix socket', { only: true }, t => {
+  const agent = new Agent()
+  t.teardown(() => agent.close())
+  const url = 'http://xyz.xyz'
+  const socketPath = '/tmp/agent-11/agent.sock'
+  const pool = agent.getConnection(url, {
+    socketPath,
+  })
+  t.is(pool, agent.getConnection(url, {
+    socketPath
+  }))
+  t.end()
+})
+
 test('getConnection should error if max hosts is reached', t => {
   const agent = new Agent({ maxHosts: 1 })
   t.teardown(() => agent.close())
@@ -88,6 +146,8 @@ test('getConnection should error if the url is invalid', t => {
   t.is(error.message, 'invalid protocol')
   t.end()
 })
+
+todo('getConnection with unix socket')
 
 test('should terminate inactive connections', async (t) => {
   const agent = new Agent({ destroyTimeout: 200 })

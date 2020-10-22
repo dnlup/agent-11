@@ -27,7 +27,7 @@ function onTimeout (pool, client, key) {
 class Agent {
   constructor ({
     destroyTimeout = 6e4,
-    maxHosts = 100,
+    maxHosts = Infinity,
     connectionOptions = {}
   } = {}) {
     if (typeof destroyTimeout !== 'number' || destroyTimeout <= 0) {
@@ -78,11 +78,15 @@ class Agent {
   }
 
   [kGetKey] (url, options) {
+    if (typeof url === 'string') {
+      url = new URL(url)
+    }
+
     let key = ''
     if (url) {
-      const protocol = url.protocol || ''
+      const protocol = url.protocol || 'http:'
       key += protocol.endsWith(':') ? protocol : `${protocol}:`
-      key += `:${url.hostname}`
+      key += url.hostname
       if (url.port) {
         key += `:${url.port}`
       }
@@ -96,9 +100,6 @@ class Agent {
   }
 
   getConnection (url, options) {
-    if (typeof url === 'string') {
-      url = new URL(url)
-    }
     const key = this[kGetKey](url, options)
     if (this[kHostsMap].has(key)) {
       const pool = this[kHostsMap].get(key)
