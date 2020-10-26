@@ -10,6 +10,7 @@ const {
   kDefaultConnectionOptions,
   kSetupConnection,
   kRemove,
+  kClose,
   kRefresh,
   kStore,
   kTimersMap,
@@ -18,9 +19,8 @@ const {
 
 const noop = () => {}
 
-function onTimeout (pool, client, key) {
-  client[kHostsMap].delete(key)
-  client[kTimersMap].delete(pool)
+function onTimeout (key, pool, client) {
+  client[kRemove](key, pool)
   pool.close(noop)
 }
 
@@ -63,14 +63,18 @@ class Agent {
     this[kHostsMap].set(key, pool)
     this[kTimersMap].set(
       pool,
-      setTimeout(onTimeout, this[kDestroyTimeout], pool, this, key)
+      setTimeout(onTimeout, this[kDestroyTimeout], key, pool, this)
     )
   }
 
   [kRemove] (key, pool) {
     this[kHostsMap].delete(key)
-    clearTimeout(this[kTimersMap].get(pool))
     this[kTimersMap].delete(pool)
+  }
+
+  [kClose] (key, pool) {
+    clearTimeout(this[kTimersMap].get(pool))
+    this[kRemove](key, pool)
   }
 
   get size () {
@@ -116,7 +120,7 @@ class Agent {
     const closing = []
     for (const [key, pool] of this[kHostsMap]) {
       closing.push(pool.close())
-      this[kRemove](key, pool)
+      this[kClose](key, pool)
     }
     return Promise.all(closing)
   }
@@ -125,7 +129,7 @@ class Agent {
     const closing = []
     for (const [key, pool] of this[kHostsMap]) {
       closing.push(pool.destroy(err))
-      this[kRemove](key, pool)
+      this[kClose](key, pool)
     }
     return Promise.all(closing)
   }

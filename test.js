@@ -1,6 +1,6 @@
 'use strict'
 
-const { test, todo } = require('tap')
+const { test } = require('tap')
 const { promisify } = require('util')
 const Agent = require('./')
 const { kGetKey } = require('./symbols')
@@ -110,7 +110,7 @@ test('getConnection with a string', t => {
   t.end()
 })
 
-test('getConnection with a unix socket', { only: true }, t => {
+test('getConnection with a unix socket', t => {
   const agent = new Agent()
   t.teardown(() => agent.close())
   const url = 'http://xyz.xyz'
@@ -146,8 +146,6 @@ test('getConnection should error if the url is invalid', t => {
   t.is(error.message, 'invalid protocol')
   t.end()
 })
-
-todo('getConnection with unix socket')
 
 test('should terminate inactive connections', async (t) => {
   const agent = new Agent({ destroyTimeout: 200 })
