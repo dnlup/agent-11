@@ -7,6 +7,7 @@ module.exports = {
   kDefaultConnectionOptions: Symbol('kDefaultConnectionOptions'),
   kSetupConnection: Symbol('kSetupConnection'),
   kRemove: Symbol('kRemove'),
+  kClose: Symbol('kClose'),
   kRefresh: Symbol('kRefresh'),
   kStore: Symbol('kStore'),
   kTimersMap: Symbol('kTimersMap'),
