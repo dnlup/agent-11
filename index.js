@@ -24,7 +24,7 @@ function onTimeout (key, pool, client) {
   pool.close(noop)
 }
 
-class Agent {
+class Agent11 {
   constructor ({
     destroyTimeout = 6e4,
     maxHosts = Infinity,
@@ -135,4 +135,4 @@ class Agent {
   }
 }
 
-module.exports = Agent
+module.exports = Agent11
