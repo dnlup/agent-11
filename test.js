@@ -2,7 +2,7 @@
 
 const { test } = require('tap')
 const { promisify } = require('util')
-const Agent = require('./')
+const Agent11 = require('./')
 const { kGetKey } = require('./symbols')
 
 const sleep = promisify(setTimeout)
@@ -35,7 +35,7 @@ test('invalid options', t => {
     }
   ]
   for (const item of list) {
-    const error = t.throws(() => new Agent(item.value))
+    const error = t.throws(() => new Agent11(item.value))
     t.is(error.message, item.message)
   }
   t.end()
@@ -75,7 +75,7 @@ test('kGetKey from url and options', t => {
     }
   ]
 
-  const agent = new Agent()
+  const agent = new Agent11()
 
   for (const [index, item] of list.entries()) {
     const key = agent[kGetKey](...item.opts)
@@ -85,7 +85,7 @@ test('kGetKey from url and options', t => {
 })
 
 test('getConnection with a URL or url like object', t => {
-  const agent = new Agent()
+  const agent = new Agent11()
   t.teardown(() => agent.close())
   const url = new URL('http://xyz.xyz:2222')
   const p1 = agent.getConnection(url)
@@ -102,7 +102,7 @@ test('getConnection with a URL or url like object', t => {
 })
 
 test('getConnection with a string', t => {
-  const agent = new Agent()
+  const agent = new Agent11()
   t.teardown(() => agent.close())
   const url = 'http://xyz.xyz'
   const pool = agent.getConnection(url)
@@ -111,7 +111,7 @@ test('getConnection with a string', t => {
 })
 
 test('getConnection with a unix socket', t => {
-  const agent = new Agent()
+  const agent = new Agent11()
   t.teardown(() => agent.close())
   const url = 'http://xyz.xyz'
   const socketPath = '/tmp/agent-11/agent.sock'
@@ -125,7 +125,7 @@ test('getConnection with a unix socket', t => {
 })
 
 test('getConnection should error if max hosts is reached', t => {
-  const agent = new Agent({ maxHosts: 1 })
+  const agent = new Agent11({ maxHosts: 1 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz1.xyz'))
   const error = t.throws(() => {
@@ -136,7 +136,7 @@ test('getConnection should error if max hosts is reached', t => {
 })
 
 test('getConnection should error if the url is invalid', t => {
-  const agent = new Agent()
+  const agent = new Agent11()
   t.teardown(() => agent.close())
   let error = t.throws(() => agent.getConnection(null))
   t.is(error.message, 'Can\'t get key from url: \'null\'')
@@ -148,7 +148,7 @@ test('getConnection should error if the url is invalid', t => {
 })
 
 test('should terminate inactive connections', async (t) => {
-  const agent = new Agent({ destroyTimeout: 200 })
+  const agent = new Agent11({ destroyTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
@@ -157,7 +157,7 @@ test('should terminate inactive connections', async (t) => {
 })
 
 test('shuld keep alive used connections', async (t) => {
-  const agent = new Agent({ destroyTimeout: 200 })
+  const agent = new Agent11({ destroyTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
@@ -170,7 +170,7 @@ test('shuld keep alive used connections', async (t) => {
 })
 
 test('close', async (t) => {
-  const agent = new Agent()
+  const agent = new Agent11()
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
   await agent.close()
@@ -179,7 +179,7 @@ test('close', async (t) => {
 })
 
 test('destroy', async (t) => {
-  const agent = new Agent()
+  const agent = new Agent11()
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
   await agent.destroy()
