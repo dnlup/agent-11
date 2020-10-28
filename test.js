@@ -11,15 +11,15 @@ test('invalid options', t => {
   const list = [
     {
       value: {
-        destroyTimeout: 'string'
+        closeTimeout: 'string'
       },
-      message: 'destroyTimeout must be a number > 0'
+      message: 'closeTimeout must be a number > 0'
     },
     {
       value: {
-        destroyTimeout: 0
+        closeTimeout: 0
       },
-      message: 'destroyTimeout must be a number > 0'
+      message: 'closeTimeout must be a number > 0'
     },
     {
       value: {
@@ -148,7 +148,7 @@ test('getConnection should error if the url is invalid', t => {
 })
 
 test('should terminate inactive connections', async (t) => {
-  const agent = new Agent11({ destroyTimeout: 200 })
+  const agent = new Agent11({ closeTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
@@ -157,7 +157,7 @@ test('should terminate inactive connections', async (t) => {
 })
 
 test('shuld keep alive used connections', async (t) => {
-  const agent = new Agent11({ destroyTimeout: 200 })
+  const agent = new Agent11({ closeTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)

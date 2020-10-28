@@ -2,7 +2,7 @@
 
 module.exports = {
   kHostsMap: Symbol('kHostsMap'),
-  kDestroyTimeout: Symbol('kDestroyTimeout'),
+  kCloseTimeout: Symbol('kDestroyTimeout'),
   kMaxHosts: Symbol('kMaxHosts'),
   kDefaultConnectionOptions: Symbol('kDefaultConnectionOptions'),
   kSetupConnection: Symbol('kSetupConnection'),

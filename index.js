@@ -5,7 +5,7 @@ const { Pool } = require('undici')
 
 const {
   kHostsMap,
-  kDestroyTimeout,
+  kCloseTimeout,
   kMaxHosts,
   kDefaultConnectionOptions,
   kSetupConnection,
@@ -26,20 +26,20 @@ function onTimeout (key, pool, client) {
 
 class Agent11 {
   constructor ({
-    destroyTimeout = 6e4,
+    closeTimeout = 6e4,
     maxHosts = Infinity,
     connectionOptions = {}
   } = {}) {
-    if (typeof destroyTimeout !== 'number' || destroyTimeout <= 0) {
+    if (typeof closeTimeout !== 'number' || closeTimeout <= 0) {
       throw new Error(
-        'destroyTimeout must be a number > 0'
+        'closeTimeout must be a number > 0'
       )
     }
     if (typeof maxHosts !== 'number' || maxHosts <= 0) {
       throw new Error('maxHosts must be a number > 0')
     }
     this[kHostsMap] = new Map()
-    this[kDestroyTimeout] = destroyTimeout
+    this[kCloseTimeout] = closeTimeout
     this[kMaxHosts] = maxHosts
     this[kDefaultConnectionOptions] = connectionOptions
     this[kTimersMap] = new Map()
@@ -63,7 +63,7 @@ class Agent11 {
     this[kHostsMap].set(key, pool)
     this[kTimersMap].set(
       pool,
-      setTimeout(onTimeout, this[kDestroyTimeout], key, pool, this)
+      setTimeout(onTimeout, this[kCloseTimeout], key, pool, this)
     )
   }
 
