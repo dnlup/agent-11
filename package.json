@@ -48,7 +48,7 @@
     "deoptigate": "^0.5.0",
     "husky": "^4.3.0",
     "markdown-toc": "^1.2.0",
-    "snazzy": "^8.0.0",
+    "snazzy": "^9.0.0",
     "standard": "^15.0.0",
     "standard-version": "^9.0.0",
     "tap": "^14.10.8",
