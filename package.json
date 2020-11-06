@@ -11,7 +11,7 @@
     "lint": "standard --verbose | snazzy",
     "test": "npm run lint && tap test.js",
     "test:ci": "npm run test -- --cov --coverage-report=lcovonly",
-    "coverage": "tap --coverage-report=html",
+    "test:coverage": "npm test -- --coverage-report=html",
     "trace:ic": "deoptigate benchmarks/agent-11.js",
     "doc": "markdown-toc -i README.md",
     "prerelease": "npm cit",
