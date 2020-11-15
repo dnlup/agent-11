@@ -1,11 +1,9 @@
 'use strict'
 
 const { test } = require('tap')
-const { promisify } = require('util')
+const FakeTimers = require('@sinonjs/fake-timers')
 const Agent11 = require('./')
 const { kGetKey } = require('./symbols')
-
-const sleep = promisify(setTimeout)
 
 test('invalid options', t => {
   const list = [
@@ -147,25 +145,34 @@ test('getConnection should error if the url is invalid', t => {
   t.end()
 })
 
-test('should terminate inactive connections', async (t) => {
+test('should terminate inactive connections', t => {
+  const clock = FakeTimers.install()
   const agent = new Agent11({ closeTimeout: 200 })
-  t.teardown(() => agent.close())
+  t.teardown(() => {
+    agent.close()
+    clock.uninstall()
+  })
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
-  await sleep(300)
+  clock.tick(300)
   t.is(0, agent.size)
+  t.end()
 })
 
-test('shuld keep alive used connections', async (t) => {
+test('shuld keep alive used connections', t => {
+  const clock = FakeTimers.install()
   const agent = new Agent11({ closeTimeout: 200 })
-  t.teardown(() => agent.close())
+  t.teardown(() => {
+    agent.close()
+    clock.uninstall()
+  })
   agent.getConnection(new URL('http://xyz.xyz'))
   t.is(1, agent.size)
-  await sleep(100)
-  t.is(1, agent.size)
+  clock.tick(100)
+  t.is(agent.size, 1)
   agent.getConnection(new URL('http://xyz.xyz'))
-  await sleep(150)
-  t.is(1, agent.size)
+  clock.tick(150)
+  t.is(agent.size, 1)
   t.end()
 })
 
