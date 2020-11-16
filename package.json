@@ -12,7 +12,7 @@
     "test": "npm run lint && tap test.js",
     "test:ci": "npm run test -- --cov --coverage-report=lcovonly",
     "test:coverage": "npm test -- --coverage-report=html",
-    "trace:ic": "deoptigate benchmarks/agent-11.js",
+    "trace:ic": "deoptigate benchmarks/trace-ic.js",
     "doc": "markdown-toc -i README.md",
     "prerelease": "npm cit",
     "release": "HUSKY_SKIP_HOOKS=1 standard-version",
