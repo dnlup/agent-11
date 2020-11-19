@@ -53,7 +53,7 @@ test('kGetKey from url and options', t => {
       opts: [
         { hostname: 'localhost' }
       ],
-      expected: 'http:localhost'
+      expected: 'localhost'
     },
     {
       opts: [

@@ -8,13 +8,17 @@ const suite = new Benchmark.Suite()
 const agent = new Agent11({
   destroyTimeout: 1e9
 })
-const url = 'http://localhost:3000'
-const pool = new Pool(url)
+const urlString = 'http://localhost:3000/'
+const urlObject = new URL('http://localhost:3000')
+const pool = new Pool(urlString)
 
 /* eslint-disable */
 suite
-  .add('Agent11.getConnection()', function getConnection() {
-    const connection = agent.getConnection(url)
+  .add('Agent11.getConnection(<string>)', function getConnectionFromString() {
+    const connection = agent.getConnection(urlString)
+  })
+  .add('Agent11.getConnection(<object>)', function getConnectionFromObject() {
+    const connection = agent.getConnection(urlObject)
   })
   .add('Pool noop', function poolNoop() {
     const connection = pool

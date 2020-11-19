@@ -1,6 +1,5 @@
 'use strict'
 
-const { URL } = require('url')
 const { Pool } = require('undici')
 
 const {
@@ -82,12 +81,10 @@ class Agent11 {
   }
 
   [kGetKey] (url, options) {
-    if (typeof url === 'string') {
-      url = new URL(url)
-    }
-
     let key = ''
-    if (url) {
+    if (typeof url === 'string') {
+      key += url
+    } else if (typeof url === 'object') {
       const protocol = url.protocol || 'http:'
       key += protocol.endsWith(':') ? protocol : `${protocol}:`
       key += url.hostname
