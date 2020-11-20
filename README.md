@@ -1,7 +1,7 @@
 # agent-11
 [![npm version](https://badge.fury.io/js/%40dnlup%2Fagent-11.svg)](https://badge.fury.io/js/%40dnlup%2Fagent-11)
 ![Tests](https://github.com/dnlup/agent-11/workflows/Tests/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/dnlup/agent-11/badge.svg?branch=next)](https://coveralls.io/github/dnlup/agent-11?branch=next)
+[![codecov](https://codecov.io/gh/dnlup/agent-11/branch/next/graph/badge.svg?token=GW9FKJPL5L)](https://codecov.io/gh/dnlup/agent-11)
 [![Known Vulnerabilities](https://snyk.io/test/github/dnlup/agent-11/badge.svg?targetFile=package.json)](https://snyk.io/test/github/dnlup/agent-11?targetFile=package.json)
 
 > A simple pool manager for [`undici`](https://github.com/nodejs/undici).
