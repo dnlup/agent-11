@@ -1,6 +1,5 @@
 'use strict'
 
-const { URL } = require('url')
 const { Pool } = require('undici')
 
 const {
@@ -14,10 +13,13 @@ const {
   kRefresh,
   kStore,
   kTimersMap,
-  kGetKey
+  kGetKey,
+  kGetKeyFromString,
+  kGetKeyFromObject
 } = require('./symbols')
 
 const noop = () => {}
+const URL_REG = /^(http[s]*:)?\/?\/?([^:/]+):?([0-9]+)?/
 
 function onTimeout (key, pool, client) {
   client[kRemove](key, pool)
@@ -47,9 +49,7 @@ class Agent11 {
 
   [kSetupConnection] (url, options) {
     if (this.size === this[kMaxHosts]) {
-      throw new Error(
-                `Maximum number of ${this[kMaxHosts]} hosts reached`
-      )
+      throw new Error(`Maximum number of ${this[kMaxHosts]} hosts reached`)
     }
     return new Pool(url, Object.assign({}, this[kDefaultConnectionOptions], options))
   }
@@ -81,24 +81,40 @@ class Agent11 {
     return this[kHostsMap].size
   }
 
-  [kGetKey] (url, options) {
-    if (typeof url === 'string') {
-      url = new URL(url)
-    }
+  [kGetKeyFromString] (url) {
+    const match = URL_REG.exec(url)
+    return this[kGetKeyFromObject]({
+      protocol: match && match[1],
+      hostname: match && match[2],
+      port: match && match[3]
+    })
+  }
 
+  [kGetKeyFromObject] (url) {
+    let key = url.protocol || 'http:'
+    if (key.charAt(key.length - 1) !== ':') {
+      key += ':'
+    }
+    key += url.hostname
+    if (url.port) {
+      key += ':'
+      key += url.port
+    }
+    return key
+  }
+
+  [kGetKey] (url, options) {
     let key = ''
-    if (url) {
-      const protocol = url.protocol || 'http:'
-      key += protocol.endsWith(':') ? protocol : `${protocol}:`
-      key += url.hostname
-      if (url.port) {
-        key += `:${url.port}`
-      }
+    if (typeof url === 'string') {
+      key = this[kGetKeyFromString](url)
+    } else if (typeof url === 'object' && url !== null) {
+      key = this[kGetKeyFromObject](url)
     } else {
       throw new TypeError(`Can't get key from url: '${url}'`)
     }
     if (options && options.socketPath) {
-      key += `:${options.socketPath}`
+      key += ':'
+      key += options.socketPath
     }
     return key
   }

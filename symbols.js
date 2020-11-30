@@ -11,5 +11,7 @@ module.exports = {
   kRefresh: Symbol('kRefresh'),
   kStore: Symbol('kStore'),
   kTimersMap: Symbol('kTimersMap'),
-  kGetKey: Symbol('kGetKey')
+  kGetKey: Symbol('kGetKey'),
+  kGetKeyFromString: Symbol('kGetKeyFromString'),
+  kGetKeyFromObject: Symbol('kGetKeyFromObject')
 }

@@ -72,6 +72,21 @@ test('kGetKey from url and options', t => {
         }
       ],
       expected: 'https:localhost:3400:/tmp/agent-11/agent.sock'
+    },
+    {
+      opts: [
+        'example.com/1/2/3?some=false'
+      ],
+      expected: 'http:example.com'
+    },
+    {
+      opts: [
+        'https://example.some.com/1/2/3?some=false',
+        {
+          socketPath: '/tmp/agent-11/agent.sock'
+        }
+      ],
+      expected: 'https:example.some.com:/tmp/agent-11/agent.sock'
     }
   ]
 
