@@ -96,7 +96,7 @@ class Agent11 {
       key += ':'
     }
     key += url.hostname
-    if (url.port) {
+    if (typeof url.port === 'string' || typeof url.port === 'number') {
       key += ':'
       key += url.port
     }
