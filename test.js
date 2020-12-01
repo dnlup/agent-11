@@ -102,6 +102,21 @@ test('kGetKey from url and options', t => {
         }
       ],
       expected: 'https:localhost:3000:/tmp/agent-11/agent.sock'
+    },
+    {
+      opts: [
+        {
+          hostname: 'some.com',
+          port: 0
+        }
+      ],
+      expected: 'http:some.com:0'
+    },
+    {
+      opts: [
+        'some.com:0'
+      ],
+      expected: 'http:some.com:0'
     }
   ]
 
