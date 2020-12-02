@@ -58,10 +58,16 @@ const agent = new Agent11({
   }
 }
 
-const conn1 = agent.getConnection('http://localhost:3000') // use conn1 to make requests with undici API
+const conn1 = agent.getConnection('http://localhost:3000/some/path') // use conn1 to make requests with undici API to locahost:3000
 
-const conn2 = agent.getConnection(new URL('http://localhost:4000', {
+const conn2 = agent.getConnection(new URL('http://localhost:4000/some/other/path', {
   socketPath: '/tmp/agent-11.sock' // these options are merged with the default `connectionOptions` passed when creating the agent
+})
+
+const conn3 = agent.getConnection({
+  protocol: 'http:',
+  hostname: 'localhost',
+  port: 5000
 })
 
 // close all the agent connections
