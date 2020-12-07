@@ -3,7 +3,6 @@
 const { test } = require('tap')
 const { promisify } = require('util')
 const Agent11 = require('./')
-const { kGetKey } = require('./symbols')
 
 const sleep = promisify(setTimeout)
 
@@ -41,89 +40,121 @@ test('invalid options', t => {
   t.end()
 })
 
-test('kGetKey from url and options', t => {
+test('Agent11.urlToObject', t => {
+  let obj = Agent11.urlToObject('http://example.com:3444/some/path?q=1')
+  t.same(obj, {
+    protocol: 'http:',
+    hostname: 'example.com',
+    port: '3444'
+  })
+  obj = Agent11.urlToObject(new URL('http://example.com:3444/some/path?q=1'))
+  t.same(obj, {
+    protocol: 'http:',
+    hostname: 'example.com',
+    port: '3444'
+  })
+  obj = Agent11.urlToObject('https://example.com/some/path?q=1')
+  t.same(obj, {
+    protocol: 'https:',
+    hostname: 'example.com',
+    port: undefined
+  })
+  obj = Agent11.urlToObject('example.com/some/path?q=1')
+  t.same(obj, {
+    protocol: undefined,
+    hostname: 'example.com',
+    port: undefined
+  })
+  t.end()
+})
+
+test('Agent11.getKey from url and options', t => {
+  // TODO: convert this list in sequential manual tests, lists are harder to debug.
   const list = [
     {
       opts: [
-        new URL('http://localhost:3333')
+        {
+          protocol: 'http:',
+          hostname: 'example.com',
+          port: '3000'
+        }
       ],
-      expected: 'http:localhost:3333'
-    },
-    {
-      opts: [
-        { hostname: 'localhost' }
-      ],
-      expected: 'http:localhost'
+      expected: 'http:example.com:3000'
     },
     {
       opts: [
         {
-          protocol: 'http',
-          hostname: 'localhost'
+          protocol: 'http:',
+          hostname: 'example.com',
+          port: 3000
         }
       ],
-      expected: 'http:localhost'
+      expected: 'http:example.com:3000'
     },
     {
       opts: [
-        new URL('https://localhost:3400'),
         {
-          socketPath: '/tmp/agent-11/agent.sock'
+          protocol: 'http:',
+          hostname: 'example.com',
+          port: 0
         }
       ],
-      expected: 'https:localhost:3400:/tmp/agent-11/agent.sock'
+      expected: 'http:example.com:0'
     },
     {
       opts: [
-        'example.com/1/2/3?some=false'
+        { hostname: 'example.com' }
       ],
       expected: 'http:example.com'
     },
     {
       opts: [
-        'https://example.some.com/1/2/3?some=false',
+        new URL('http://example.com')
+      ],
+      expected: 'http:example.com'
+    },
+    {
+      opts: [
+        {
+          protocol: 'https:',
+          hostname: 'example.com',
+          port: 3400
+        },
         {
           socketPath: '/tmp/agent-11/agent.sock'
         }
       ],
-      expected: 'https:example.some.com:/tmp/agent-11/agent.sock'
+      expected: 'https:example.com:3400:/tmp/agent-11/agent.sock'
     },
     {
       opts: [
-        'localhost:3000/1/2/3?some=false'
-      ],
-      expected: 'http:localhost:3000'
-    },
-    {
-      opts: [
-        'https://localhost:3000/1/2/3?some=false',
+        new URL('https://example.com:3400'),
         {
           socketPath: '/tmp/agent-11/agent.sock'
         }
       ],
-      expected: 'https:localhost:3000:/tmp/agent-11/agent.sock'
+      expected: 'https:example.com:3400:/tmp/agent-11/agent.sock'
     },
     {
       opts: [
         {
-          hostname: 'some.com',
-          port: 0
+          protocol: 'http',
+          hostname: 'example.com',
+          pathname: '/some/path?q=1'
         }
       ],
-      expected: 'http:some.com:0'
+      expected: 'http:example.com'
     },
     {
       opts: [
-        'some.com:0'
+        new URL('http://example.com/some/path?q=1')
       ],
-      expected: 'http:some.com:0'
+      expected: 'http:example.com'
     }
   ]
 
-  const agent = new Agent11()
-
   for (const [index, item] of list.entries()) {
-    const key = agent[kGetKey](...item.opts)
+    const key = Agent11.getKey(...item.opts)
     t.is(key, item.expected, `list item ${index}`)
   }
   t.end()
@@ -184,9 +215,9 @@ test('getConnection should error if the url is invalid', t => {
   const agent = new Agent11()
   t.teardown(() => agent.close())
   let error = t.throws(() => agent.getConnection(null))
-  t.is(error.message, 'Can\'t get key from url: \'null\'')
+  t.is(error.message, 'Invalid url, received: null')
   error = t.throws(() => agent.getConnection(''))
-  t.is(error.message, 'Invalid URL: ')
+  t.is(error.message, 'Invalid url, received: ')
   error = t.throws(() => agent.getConnection({}))
   t.is(error.message, 'invalid protocol')
   t.end()
