@@ -6,7 +6,7 @@
 
 > A simple pool manager for [`undici`](https://github.com/nodejs/undici).
 
-You might find this module useful if you are using [`undici`](https://github.com/nodejs/undici) and need to manage connections to different and unknown hosts.
+You might find this module useful if you use [`undici`](https://github.com/nodejs/undici) and need to manage connections to different and unknown hosts.
 
 `agent-11` controls [`undici`'s](https://github.com/nodejs/undici) pool connections to different hosts. Each time you request a new one, it creates a new pool.
 If you don't request this connection after a certain amount of time, `agent-11` will close it.
@@ -20,6 +20,8 @@ If you don't request this connection after a certain amount of time, `agent-11` 
 - [Usage](#usage)
 - [API](#api)
   * [Class: `Agent11`](#class-agent11)
+    + [Static method: `Agent11.urlToObject(url)`](#static-method-agent11urltoobjecturl)
+    + [Static method: `Agent11.getKey(url[, options])`](#static-method-agent11getkeyurl-options)
     + [new `Agent11([options])`](#new-agent11options)
     + [`agent.getConnection(url, [options])`](#agentgetconnectionurl-options)
     + [`agent.close()`](#agentclose)
@@ -84,6 +86,19 @@ agent.destroy(new Error('no more!')).then().catch(console.error)
 
 It manages `undici`'s pool connections.
 
+#### Static method: `Agent11.urlToObject(url)`
+
+* `url` `<string||URL|Object>`: the url to convert.
+* Returns: `<Object>` A url-like object with the properties `protocol`, `hostname` and `port`.
+
+#### Static method: `Agent11.getKey(url[, options])`
+
+* `url` `<Object>`: a url-like object.
+* `options` `<Object>`: connection options. See [undici documentation](https://github.com/nodejs/undici#new-undiciclienturl-opts).
+* Returns: `<string>`: the key that maps the url.
+
+This method creates a key that maps a connection pool to a url.
+
 #### new `Agent11([options])`
 
 * `options` `<Object>`
@@ -131,3 +146,4 @@ $ npm lint
 # Create the TOC in the README
 $ npm run doc
 ```
+
