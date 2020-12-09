@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/dnlup/agent-11/compare/v1.0.2...v2.0.0) (2020-12-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* some error messages have changed.
+
+### Features
+
+* add full url support ([34a54e1](https://github.com/dnlup/agent-11/commit/34a54e134698ac1fb4c38f62784fa11ad1661712))
+
 ### [1.0.2](https://github.com/dnlup/agent-11/compare/v1.0.1...v1.0.2) (2020-12-01)
 
 
