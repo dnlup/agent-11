@@ -200,6 +200,24 @@ test('getConnection with a unix socket', t => {
   t.end()
 })
 
+test('getConnection should return the same pool', t => {
+  const agent = new Agent11()
+  t.teardown(() => agent.close())
+  const string = 'http://xyz.xyz/some/path?q=1'
+  const obj = {
+    protocol: 'http:',
+    hostname: 'xyz.xyz'
+  }
+  const url = new URL('http://xyz.xyz/some/other/path?q=2')
+  const options = {
+    socketPath: '/tmp/agent-11/agent.sock'
+  }
+  const pool = agent.getConnection(string, options)
+  t.is(pool, agent.getConnection(obj, options))
+  t.is(pool, agent.getConnection(url, options))
+  t.end()
+})
+
 test('getConnection should error if max hosts is reached', t => {
   const agent = new Agent11({ maxHosts: 1 })
   t.teardown(() => agent.close())
