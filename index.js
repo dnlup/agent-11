@@ -52,6 +52,7 @@ class Agent11 {
         hostname: match && match[2],
         port: match && match[3]
       }
+    // perf: this branch has polymorphic inline caches
     } else if (typeof url === 'object' && url !== null) {
       return {
         protocol: url.protocol,
@@ -64,6 +65,7 @@ class Agent11 {
 
   static getKey (url, options) {
     let key = url.protocol || 'http:'
+    // perf: this part has polymorphic inline caches
     if (key.charAt(key.length - 1) !== ':') {
       key += ':'
     }
