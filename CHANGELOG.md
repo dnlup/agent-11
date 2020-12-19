@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/dnlup/agent-11/compare/v2.0.0...v3.0.0) (2020-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** the minimu required version of undici is 3
+
+### build
+
+* **deps:** bump undici to version 3 ([b29efde](https://github.com/dnlup/agent-11/commit/b29efde8da482eb4e30586ef6f0c99f603595d8b))
+
 ## [2.0.0](https://github.com/dnlup/agent-11/compare/v1.0.2...v2.0.0) (2020-12-09)
 
 
