@@ -6,7 +6,8 @@
 
 > A simple pool manager for [`undici`](https://github.com/nodejs/undici).
 
-You might find this module useful if you use [`undici`](https://github.com/nodejs/undici) and need to manage connections to different and unknown hosts.
+You might find this module useful if you use [`undici`](https://github.com/nodejs/undici) and need to manage connections to different hosts and you don't know them ahead of time, so you can't
+create static clients.
 
 `agent-11` controls [`undici`'s](https://github.com/nodejs/undici) pool connections to different hosts. Each time you request a new one, it creates a new pool.
 If you don't request this connection after a certain amount of time, `agent-11` will close it.
