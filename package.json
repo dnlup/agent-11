@@ -9,7 +9,8 @@
   },
   "scripts": {
     "lint": "standard --verbose | snazzy",
-    "test": "npm run lint && tap test.js",
+    "lint:fix": "standard --fix --verbose | snazzy",
+    "test": "tap test.js",
     "test:ci": "npm run test -- --cov --coverage-report=lcovonly",
     "test:coverage": "npm test -- --coverage-report=html",
     "trace:ic": "deoptigate benchmarks/trace-ic.js",
