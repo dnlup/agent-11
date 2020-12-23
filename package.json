@@ -16,10 +16,11 @@
     "trace:ic": "deoptigate benchmarks/trace-ic.js",
     "bench": "node benchmarks/bench.js",
     "doc": "markdown-toc -i README.md",
-    "prerelease": "npm ci && npm run lint && npm test",
+    "release:check": "npm ci && npm run lint && npm test",
+    "prerelease": "npm run release:check",
     "release": "HUSKY_SKIP_HOOKS=1 standard-version",
     "postrelease": "npm run push && npm publish",
-    "prenext": "npm cit",
+    "prenext": "npm release:check",
     "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
     "postnext": "npm run push && npm publish --tag next",
     "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
