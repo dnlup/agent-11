@@ -16,7 +16,7 @@
     "trace:ic": "deoptigate benchmarks/trace-ic.js",
     "bench": "node benchmarks/bench.js",
     "doc": "markdown-toc -i README.md",
-    "prerelease": "npm cit",
+    "prerelease": "npm ci && npm run lint && npm test",
     "release": "HUSKY_SKIP_HOOKS=1 standard-version",
     "postrelease": "npm run push && npm publish",
     "prenext": "npm cit",
