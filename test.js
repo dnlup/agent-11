@@ -236,8 +236,6 @@ test('getConnection should error if the url is invalid', t => {
   t.is(error.message, 'Invalid url, received: null')
   error = t.throws(() => agent.getConnection(''))
   t.is(error.message, 'Invalid url, received: ')
-  error = t.throws(() => agent.getConnection({}))
-  t.is(error.message, 'invalid protocol')
   t.end()
 })
 
