@@ -167,7 +167,7 @@ test('getConnection with a URL or url like object', t => {
   const p1 = agent.getConnection(url)
   t.is(p1, agent.getConnection(url))
   const urlLike = {
-    protocol: 'http',
+    protocol: 'http:',
     hostname: 'example.undici.com',
     port: 3000
   }
