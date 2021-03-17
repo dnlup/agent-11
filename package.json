@@ -18,12 +18,13 @@
     "doc": "markdown-toc -i README.md",
     "release:check": "npm ci && npm run lint && npm test",
     "prerelease": "npm run release:check",
-    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
+    "release": "HUSKY=0 standard-version",
     "postrelease": "npm run push && npm publish",
     "prenext": "npm release:check",
-    "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
+    "next": "HUSKY=0 standard-version --prerelease",
     "postnext": "npm run push && npm publish --tag next",
-    "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
+    "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
