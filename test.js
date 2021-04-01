@@ -35,7 +35,7 @@ test('invalid options', t => {
   ]
   for (const item of list) {
     const error = t.throws(() => new Agent11(item.value))
-    t.is(error.message, item.message)
+    t.equal(error.message, item.message)
   }
   t.end()
 })
@@ -155,7 +155,7 @@ test('Agent11.getKey from url and options', t => {
 
   for (const [index, item] of list.entries()) {
     const key = Agent11.getKey(...item.opts)
-    t.is(key, item.expected, `list item ${index}`)
+    t.equal(key, item.expected, `list item ${index}`)
   }
   t.end()
 })
@@ -165,15 +165,15 @@ test('getConnection with a URL or url like object', t => {
   t.teardown(() => agent.close())
   const url = new URL('http://xyz.xyz:2222')
   const p1 = agent.getConnection(url)
-  t.is(p1, agent.getConnection(url))
+  t.equal(p1, agent.getConnection(url))
   const urlLike = {
     protocol: 'http:',
     hostname: 'example.undici.com',
     port: 3000
   }
   const p2 = agent.getConnection(urlLike)
-  t.is(p2, agent.getConnection(urlLike))
-  t.is(true, p1 !== p2)
+  t.equal(p2, agent.getConnection(urlLike))
+  t.equal(true, p1 !== p2)
   t.end()
 })
 
@@ -182,7 +182,7 @@ test('getConnection with a string', t => {
   t.teardown(() => agent.close())
   const url = 'http://xyz.xyz'
   const pool = agent.getConnection(url)
-  t.is(pool, agent.getConnection(url))
+  t.equal(pool, agent.getConnection(url))
   t.end()
 })
 
@@ -194,7 +194,7 @@ test('getConnection with a unix socket', t => {
   const pool = agent.getConnection(url, {
     socketPath
   })
-  t.is(pool, agent.getConnection(url, {
+  t.equal(pool, agent.getConnection(url, {
     socketPath
   }))
   t.end()
@@ -213,8 +213,8 @@ test('getConnection should return the same pool', t => {
     socketPath: '/tmp/agent-11/agent.sock'
   }
   const pool = agent.getConnection(string, options)
-  t.is(pool, agent.getConnection(obj, options))
-  t.is(pool, agent.getConnection(url, options))
+  t.equal(pool, agent.getConnection(obj, options))
+  t.equal(pool, agent.getConnection(url, options))
   t.end()
 })
 
@@ -225,7 +225,7 @@ test('getConnection should error if max hosts is reached', t => {
   const error = t.throws(() => {
     agent.getConnection(new URL('http://xyz2.xyz'))
   })
-  t.is('Maximum number of 1 hosts reached', error.message)
+  t.equal('Maximum number of 1 hosts reached', error.message)
   t.end()
 })
 
@@ -233,9 +233,9 @@ test('getConnection should error if the url is invalid', t => {
   const agent = new Agent11()
   t.teardown(() => agent.close())
   let error = t.throws(() => agent.getConnection(null))
-  t.is(error.message, 'Invalid url, received: null')
+  t.equal(error.message, 'Invalid url, received: null')
   error = t.throws(() => agent.getConnection(''))
-  t.is(error.message, 'Invalid url, received: ')
+  t.equal(error.message, 'Invalid url, received: ')
   t.end()
 })
 
@@ -243,38 +243,38 @@ test('should terminate inactive connections', async (t) => {
   const agent = new Agent11({ closeTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   await sleep(300)
-  t.is(0, agent.size)
+  t.equal(0, agent.size)
 })
 
 test('shuld keep alive used connections', async (t) => {
   const agent = new Agent11({ closeTimeout: 200 })
   t.teardown(() => agent.close())
   agent.getConnection(new URL('http://xyz.xyz'))
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   await sleep(100)
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   agent.getConnection(new URL('http://xyz.xyz'))
   await sleep(150)
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   t.end()
 })
 
 test('close', async (t) => {
   const agent = new Agent11()
   agent.getConnection(new URL('http://xyz.xyz'))
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   await agent.close()
-  t.is(0, agent.size)
+  t.equal(0, agent.size)
   t.end()
 })
 
 test('destroy', async (t) => {
   const agent = new Agent11()
   agent.getConnection(new URL('http://xyz.xyz'))
-  t.is(1, agent.size)
+  t.equal(1, agent.size)
   await agent.destroy()
-  t.is(0, agent.size)
+  t.equal(0, agent.size)
   t.end()
 })
